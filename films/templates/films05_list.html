@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Film Explorer - DataTable</title>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
+
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
+</head>
+<body>
+
+<h1>Film Explorer</h1>
+
+<table id="filmTable" class="display">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Release Year</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for film in films %}
+        <tr>
+            <td>
+                <a href="{% url 'film_detail_slug' slug=film.slug %}">
+                    {{ film.title }}
+                </a>
+            </td>
+            <td>{{ film.release_year }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="2">No films available</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+    $(document).ready(function () {
+        $('#filmTable').DataTable();
+    });
+</script>
+
+</body>
+</html>

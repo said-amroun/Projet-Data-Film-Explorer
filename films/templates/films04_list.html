@@ -1,0 +1,16 @@
+<html>
+    <body>
+        <h1>Film Explorer</h1>
+        <p>Explore films here!</p>
+        <ul>
+            {% for film in films %}
+            <li>
+                <a href="{% url 'film_detail_slug' slug=film.slug %}">
+                    {{ film.title }}
+                </a>    
+                ({{ film.release_year }})
+            </li>
+            {% endfor %}
+        </ul>
+    </body>
+</html>

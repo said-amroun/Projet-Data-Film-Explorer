@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}
+Film Explorer — List
+{% endblock %}
+
+{% block content %}
+<h1>Film Explorer</h1>
+<p>Explore films here!</p>
+
+<ul>
+    {% for film in films %}
+        <li>{{ film }}</li>
+    {% empty %}
+        <li>No films available.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

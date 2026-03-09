@@ -1,0 +1,19 @@
+<h1>{{ film.title }}</h1>
+<p>Release Year: {{ film.release_year }}</p>
+
+{% if user in film.viewed_by.all %}
+    <p>You have viewed this film.</p>
+{% else %}
+    <p>You have not viewed this film.</p>
+{% endif %}
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">
+        {% if user in film.viewed_by.all %}
+            Mark as Not Viewed
+        {% else %}
+            Mark as Viewed
+        {% endif %}
+    </button>
+</form>
