@@ -44,6 +44,10 @@ urlpatterns = [
     path(
     'film_detail03/<slug:slug>/',
     views.film_detail03,
-    name='film_detail03'
-),
+    name='film_detail03'),
+
+    path(
+    'search/',
+    views.film_search,
+    name='film_search'),
 ]

@@ -1,19 +1,81 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
 <h1>{{ film.title }}</h1>
+
 <p>Release Year: {{ film.release_year }}</p>
 
+<form method="post">
+
+{% csrf_token %}
+
+<button class="btn btn-secondary" name="toggle_viewed">
+
 {% if user in film.viewed_by.all %}
-    <p>You have viewed this film.</p>
+
+Mark as Not Viewed
+
 {% else %}
-    <p>You have not viewed this film.</p>
+
+Mark as Viewed
+
 {% endif %}
 
-<form method="post">
-    {% csrf_token %}
-    <button type="submit">
-        {% if user in film.viewed_by.all %}
-            Mark as Not Viewed
-        {% else %}
-            Mark as Viewed
-        {% endif %}
-    </button>
+</button>
+
 </form>
+
+<hr>
+
+<h3>Reviews</h3>
+
+<ul class="list-group">
+
+{% for review in reviews %}
+
+<li class="list-group-item">
+
+<strong>{{ review.user.username }}</strong>
+
+⭐ {{ review.rating }}/5
+
+<br>
+
+{{ review.comment }}
+
+</li>
+
+{% empty %}
+
+<li class="list-group-item">
+
+No reviews yet
+
+</li>
+
+{% endfor %}
+
+</ul>
+
+{% if user.is_authenticated %}
+
+<h4 class="mt-3">Add Review</h4>
+
+<form method="post">
+
+{% csrf_token %}
+
+{{ review_form.as_p }}
+
+<button class="btn btn-primary">
+
+Submit Review
+
+</button>
+
+</form>
+
+{% endif %}
+
+{% endblock %}

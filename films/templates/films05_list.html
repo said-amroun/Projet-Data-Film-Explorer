@@ -1,52 +1,108 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Film Explorer - DataTable</title>
+{% extends 'base.html' %}
 
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+{% block content %}
 
-    <!-- DataTables CSS -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
+<h1 class="mb-3">Film Explorer</h1>
 
-    <!-- DataTables JS -->
-    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
-</head>
-<body>
+<h2>Search a film</h2>
 
-<h1>Film Explorer</h1>
+<form method="get" action="{% url 'film_search' %}" class="mb-3">
 
-<table id="filmTable" class="display">
+    <input
+        class="form-control"
+        type="text"
+        name="q"
+        placeholder="Search films..."
+        value="{{ query|default:'' }}"
+    >
+
+    <br>
+
+    <button class="btn btn-primary" type="submit">
+
+        Search
+
+    </button>
+
+</form>
+
+<hr>
+
+<table id="filmTable" class="table table-striped">
+
     <thead>
+
         <tr>
+
             <th>Title</th>
+
             <th>Release Year</th>
+
         </tr>
+
     </thead>
+
     <tbody>
+
         {% for film in films %}
+
         <tr>
+
             <td>
+
                 <a href="{% url 'film_detail_slug' slug=film.slug %}">
+
                     {{ film.title }}
+
                 </a>
+
             </td>
-            <td>{{ film.release_year }}</td>
+
+            <td>
+
+                {{ film.release_year }}
+
+            </td>
+
         </tr>
+
         {% empty %}
+
         <tr>
-            <td colspan="2">No films available</td>
+
+            <td colspan="2">
+
+                No films available
+
+            </td>
+
         </tr>
+
         {% endfor %}
+
     </tbody>
+
 </table>
 
+<!-- jQuery -->
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- DataTables -->
+
+<link rel="stylesheet"
+href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
+
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
+
 <script>
-    $(document).ready(function () {
-        $('#filmTable').DataTable();
-    });
+
+$(document).ready(function () {
+
+$('#filmTable').DataTable();
+
+});
+
 </script>
 
-</body>
-</html>
+{% endblock %}

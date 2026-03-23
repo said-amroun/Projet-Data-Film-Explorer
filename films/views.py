@@ -68,16 +68,78 @@ def films07_view(request):
     else:
         return render(request, 'films07_anonymous.html')
     
+from .forms import ReviewForm
+
 @login_required
 def film_detail03(request, slug):
+
     film = get_object_or_404(Film2, slug=slug)
 
+    reviews = film.reviews.all()
+
     if request.method == 'POST':
-        if request.user in film.viewed_by.all():
-            film.viewed_by.remove(request.user)
-        else:
-            film.viewed_by.add(request.user)
 
-        return redirect('film_detail03', slug=slug)
+        if 'toggle_viewed' in request.POST:
 
-    return render(request, 'film_detail03.html', {'film': film})
+            if request.user in film.viewed_by.all():
+                film.viewed_by.remove(request.user)
+
+            else:
+                film.viewed_by.add(request.user)
+
+            return redirect('film_detail03', slug=slug)
+
+        review_form = ReviewForm(request.POST)
+
+        if review_form.is_valid():
+
+            review = review_form.save(commit=False)
+
+            review.film = film
+            review.user = request.user
+
+            review.save()
+
+            return redirect('film_detail03', slug=slug)
+
+    else:
+        review_form = ReviewForm()
+
+    return render(
+
+        request,
+        "film_detail03.html",
+
+        {
+            "film": film,
+            "reviews": reviews,
+            "review_form": review_form
+        }
+    )
+
+def film_search(request):
+
+    query = request.GET.get('q')
+
+    if query:
+
+        films = Film2.objects.filter(title__icontains=query)
+
+    else:
+
+        films = Film2.objects.all()
+
+    return render(
+
+        request,
+
+        'films05_list.html',
+
+        {
+
+            "films": films,
+
+            "query": query
+
+        }
+    )
